@@ -1,0 +1,124 @@
+Return Keypad Code
+
+
+
+Send Feedback
+Given an integer n, using phone keypad find out all the possible strings that can be made using digits 
+of input n.
+Return empty string for numbers 0 and 1.
+Note :
+1. The order of strings are not important.
+2. Input and output has already been managed for you. You just have to populate the output array and 
+return the count of elements populated in the output array.
+Input Format :
+Integer n
+Output Format :
+All possible strings in different lines
+Constraints :
+1 <= n <= 10^6
+Sample Input:
+23
+Sample Output:
+ad
+ae
+af
+bd
+be
+bf
+cd
+ce
+cf
+
+
+import java.util.ArrayList;
+
+public class solution {
+
+	// Return a string array that contains all the possible strings
+	public static String[] keypad(int n){
+		if( n == 0 ){
+			String[] ans = new String[0];
+			return ans;
+		}
+		// Write your code here
+		int k = n;
+		ArrayList<String> arr = new ArrayList<>();
+		helper(n, arr);
+		
+		int len = getLen( n );
+		int ansSize = 0;
+
+		for( int i = 0; i < arr.size(); i++ ){
+			if( arr.get(i).length() == len ){
+				ansSize++;
+			}
+		}
+
+		String[] ans = new String[ansSize];
+		int j = 0;
+		for( int i = 0; i < arr.size(); i++ ){
+			if( arr.get(i).length() == len ){
+				ans[j] = arr.get(i);
+				j++;
+			}
+		}
+		
+		return ans;
+	}
+
+	public static void helper( int n, ArrayList<String> arr ){
+		if( n == 0 || n == 1 ){
+			arr.add("");
+			return;
+		}
+
+		String str = helper2( n % 10 );
+		helper( n/10, arr );
+
+		int a = arr.size();
+
+		for( int i = 0; i < a; i++ ){
+			for( int j = 0; j < str.length(); j++ ){
+				arr.add( arr.get(i) + str.charAt(j) );
+			}
+		}
+	}
+
+	public static String helper2( int n ){
+		switch(n){
+			case 2:
+				return "abc";
+			case 3:
+				return "def";
+			case 4:
+				return "ghi";
+			case 5:
+				return "jkl";
+			case 6: 
+				return "mno";
+			case 7:
+				return "pqrs";
+			case 8:
+				return "tuv";
+			case 9:
+				return "wxyz";
+			case 0:
+				return "";
+			default :
+				return "";
+		}
+
+		// return "";
+	}
+
+	public static int getLen( int n ){
+		if( n >= 0 && n <= 9 ){
+			return 1;
+		}
+
+		int smallAns = getLen( n/10 );
+		return 1 + smallAns;
+	
+	}
+	
+}

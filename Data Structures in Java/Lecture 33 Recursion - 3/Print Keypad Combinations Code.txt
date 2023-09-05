@@ -1,0 +1,98 @@
+Print Keypad Combinations Code
+
+
+
+Send Feedback
+Given an integer n, using phone keypad find out and print all the possible strings that can be made 
+using digits of input n.
+Note :
+The order of strings are not important. Just print different strings in new lines.
+Input Format :
+Integer n
+Output Format :
+All possible strings in different lines
+Constraints :
+1 <= n <= 10^6
+Sample Input:
+23
+Sample Output:
+ad
+ae
+af
+bd
+be
+bf
+cd
+ce
+cf
+
+
+import java.util.ArrayList;
+
+public class solution {
+
+	public static void printKeypad(int n){
+		// Write your code here
+
+		if( n == 0 ){
+			return;
+		}	
+
+		ArrayList<String> arr = new ArrayList<>();
+		helper1( n, arr );
+		int len = getLen( n );
+
+		for( int i = 0; i < arr.size(); i++ ){
+			if( arr.get(i).length() == len ){
+				System.out.println( arr.get(i) );
+			}
+		}
+	}
+
+	public static void helper1( int n, ArrayList<String> arr ){
+		if( n == 0 || n == 1 ){
+			arr.add("");
+			return;
+		}
+
+		String str = helper2( n % 10 );
+		helper1( n/10, arr );
+		int a = arr.size();
+		for( int i = 0; i < a; i++ ){
+			for( int j = 0; j < str.length(); j++ ){
+				arr.add( arr.get(i) + str.charAt(j) );
+			}
+		}
+	}
+
+	public static String helper2( int n ){
+		switch(n){
+			case 2:
+				return "abc";
+			case 3:
+				return "def";
+			case 4:
+				return "ghi";
+			case 5:
+				return "jkl";
+			case 6:
+				return "mno";
+			case 7:
+				return "pqrs";
+			case 8:
+				return "tvu";
+			case 9:
+				return "wxyz";
+			default:
+				return "";
+		}
+	}
+
+	public static int getLen( int n ){
+		if( n >= 0 && n <= 9 ){
+			return 1;
+		}
+
+		return 1 + getLen(n/10);
+	}
+}
