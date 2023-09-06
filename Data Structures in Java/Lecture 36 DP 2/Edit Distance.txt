@@ -1,0 +1,116 @@
+Edit Distance
+
+
+
+Send Feedback
+You are given two strings S and T of lengths M and N, respectively. Find the 'Edit Distance' between the 
+strings.
+Edit Distance of two strings is the minimum number of steps required to make one string equal to the other. 
+In order to do so, you can perform the following three operations:
+1. Delete a character
+2. Replace a character with another one
+3. Insert a character
+Note :
+Strings don't contain spaces in between.
+ Input format :
+The first line of input contains the string S of length M.
+
+The second line of the input contains the String T of length N.
+Output format :
+Print the minimum 'Edit Distance' between the strings.
+Constraints :
+0 <= M <= 10 ^ 3
+0 <= N <= 10 ^ 3
+
+Time Limit: 1 sec
+Sample Input 1 :
+abc
+dc
+Sample Output 1 :
+2
+ Explanation to the Sample Input 1 :
+ In 2 operations we can make string T to look like string S.
+First, insert character 'a' to string T, which makes it "adc".
+
+And secondly, replace the character 'd' of string T with 'b' from the string S. This would make string T as 
+"abc" which is also string S. 
+
+Hence, the minimum distance.
+Sample Input 2 :
+whgtdwhgtdg
+aswcfg
+Sample Output 2 :
+9
+
+
+	
+public class Solution {
+
+	public static int editDistance(String s, String t) {
+		//Your code goes here
+		int n = s.length();
+		int m = t.length();
+
+		int[][] dp = new int[n+1][m+1];
+
+		for( int i = 0; i < n+1; i++ ){
+			for( int j = 0; j < m+1; j++ ){
+				dp[i][j] = -1;
+			}
+		}
+
+		return helper(s, t, 0, 0, dp);
+    }
+
+	public static int helper( String str1, String str2, int i, int j, int[][] dp ){
+		if( str1.length() == 0 ){
+			return str2.length();
+		}
+
+		if( str2.length() == 0 ){
+			return str1.length();
+		}
+
+		int ans1 = Integer.MAX_VALUE;
+		int ans2 = Integer.MAX_VALUE;
+		int ans3 = Integer.MAX_VALUE;
+		int ans4 = Integer.MAX_VALUE;
+
+		if( str1.charAt(0) == str2.charAt(0) ){
+			ans1 = helper(str1.substring(1) , str2.substring(1), i+1, j+1, dp );
+			dp[i][j] = ans1;
+		}
+
+		if( dp[i+1][j] == -1 ){
+			ans2 = helper(str1.substring(1), str2, i+1, j, dp);
+			dp[i+1][j] = ans2;
+		}else{
+			ans2 = dp[i+1][j];
+		}
+
+		if( dp[i][j+1] == -1 ){
+			ans3 = helper(str1, str2.substring(1), i, j+1, dp);
+			dp[i][j+1] = ans3;
+		}else{
+			ans3 = dp[i][j+1];
+		}
+
+		if( dp[i+1][j+1] == -1 ){
+			ans4 = helper(str1.substring(1), str2.substring(1), i+1, j+1, dp);
+			dp[i+1][j+1] = ans4;
+		}else{
+			ans4 = dp[i+1][j+1];
+		}
+
+		int ansR1 = Math.min(ans1, ans2);
+		int ansR2 = Math.min(ans3, ans4);
+
+		int ans = Math.min(ansR1, ansR2);
+		if( ans != ans1 ){
+			return ++ans;
+		}else{
+			return ans;
+		}
+	}
+
+}
