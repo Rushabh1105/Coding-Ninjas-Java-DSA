@@ -1,0 +1,89 @@
+Merge Two BSTs
+
+
+
+Send Feedback
+Given two binary search trees ,merge the two given balanced BSTs into a balanced binary search tree.
+Note: You just have to return the root of the balanced BST.
+Give solution of O(m+n) time complexity.
+Input format :
+Line 1 :  Elements in level order form of first tree (separated by space)
+(If any node does not have left or right child, take -1 in its place)
+Line 2: Elements in level order form of second tree (separated by space)
+(If any node does not have left or right child, take -1 in its place)
+Output Format :
+Print the inorder form of new BST
+Sample Input 1:
+2 1 3 -1 -1 -1 -1
+4 -1 -1
+Sample Output 1:
+ 1 2 3 4 
+
+
+import java.util.*;
+
+// import com.sun.tools.javac.code.Attribute.Array;
+
+public class solution {
+	static void printMergeTrees(BinaryTreeNode<Integer> root1,
+			BinaryTreeNode<Integer> root2) {
+		/*
+		 * Your class should be named Solution.Don't write main().Don't take
+		 * input, it is passed as function argument.Print output as specified in
+		 * question.
+		 */
+		 ArrayList<Integer> arr1 = new ArrayList<>();
+		 ArrayList<Integer> arr2 = new ArrayList<>();
+
+		 BSTt2Array( root1, arr1 );
+		 BSTt2Array( root2, arr2 );
+
+		 ArrayList<Integer> arr3 = new ArrayList<>();
+		 for( int i = 0; i < arr1.size(); i++ ){
+			 arr3.add( arr1.get(i) );
+		 }
+
+		 for( int i = 0; i < arr2.size(); i++ ){
+			 arr3.add( arr2.get(i) );
+		 }
+
+		 Collections.sort( arr3 );
+
+		BinaryTreeNode<Integer> root = makeBST( arr3, 0, arr3.size()-1 );
+		print(root);
+	}
+
+	public static void BSTt2Array( BinaryTreeNode<Integer> root, ArrayList<Integer> arr ){
+		if( root == null ){
+			return;
+		}
+
+		BSTt2Array( root.left , arr );
+		arr.add( root.data );
+		BSTt2Array( root.right, arr );
+	}
+
+	public static BinaryTreeNode<Integer> makeBST( ArrayList<Integer> arr, int si, int ei ){
+		if( si > ei ){
+			return null;
+		}
+
+		int mid = (si+ei)/2;
+		BinaryTreeNode<Integer> root = new BinaryTreeNode<Integer>( arr.get(mid) );
+
+		root.left = makeBST( arr, si, mid-1);
+		root.right = makeBST(arr, mid+1, ei );
+
+		return root;
+	}
+
+	static void print(BinaryTreeNode<Integer> root) {
+        if ( root==null ){
+			return;
+		}
+
+        print(root.left);
+        System.out.print(root.data + " ");
+        print(root.right);
+    }
+}

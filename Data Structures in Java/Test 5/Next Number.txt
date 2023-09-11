@@ -22,3 +22,73 @@ Sample Output 1 :
 1 0 0 0 
 
 
+/*************** 
+ * Following is the Node class already written 
+class LinkedListNode<T> {
+	T data;
+	LinkedListNode<T> next;
+
+	public LinkedListNode(T data) {
+		this.data = data;
+	}
+}
+ ***************/
+
+public class Solution {
+
+
+	public static LinkedListNode<Integer> nextLargeNumber(LinkedListNode<Integer> head) {
+		if( head == null ){
+			return head;
+		}
+
+		LinkedListNode<Integer> temp1, temp2, temp3;
+		
+		temp3 = head;
+		while( temp3.next != null ){
+			temp3 = temp3.next;
+		}
+
+		if( temp3.data >= 0 && temp3.data < 9 ){
+			temp3.data++;
+			return head;
+		}
+
+
+		int flag = helper(head);
+		if( flag == 1 ){
+			LinkedListNode<Integer> temp = new  LinkedListNode(1);
+			temp.next = head;
+			head = temp;
+		}
+
+
+		return head;
+	}
+
+	public static int helper( LinkedListNode<Integer> head ){
+		if( head.next == null ){
+			int data = head.data;
+			if( data == 9 ){
+				head.data = 0;
+				return 1;
+			}else{
+				head.data = data+1;
+				return 0;
+			}
+		}
+
+		int smallAns = helper( head.next );
+
+		int sum = head.data+smallAns;
+		if( sum > 9 ){
+			head.data = sum%10;
+			return sum/10;
+		}else{
+			head.data = sum;
+			return 0;
+		}
+	}
+
+
+}

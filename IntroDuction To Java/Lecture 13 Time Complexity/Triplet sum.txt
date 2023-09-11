@@ -48,3 +48,61 @@ Since there doesn't exist any triplet with sum equal to 19 for the first query, 
 
 For the second query, we have 5 triplets in total that sum up to 10. 
 They are, (2, 8, 0), (2, 11, -3), (-5, 5, 10), (8, 5, -3) and (-6, 5, 11)
+
+
+
+import java.util.Arrays;
+
+public class Solution {	
+
+	public static int pairSum(int[] arr,int startIndex, int endIndex, int num) {
+		//Your code goes here
+		//int pair = 0;
+        int ans = 0;
+
+		while( startIndex < endIndex ){  
+			if(arr[startIndex] + arr[endIndex] == num && arr[startIndex] == arr[endIndex] ){
+				int z = endIndex -startIndex + 1;
+				int sum=(z)*(z-1)/2;
+				ans += sum;
+				return ans;
+			}
+			if( arr[startIndex] + arr[endIndex] > num ){
+				endIndex--;
+			}else if( arr[startIndex] + arr[endIndex] < num ){
+				startIndex++;
+			}else{
+				int cnt1 = 1, cnt2 = 1;
+				while(arr[startIndex]==arr[startIndex+1]){
+					cnt1++;
+					startIndex++;
+				}
+				while(arr[endIndex]==arr[endIndex-1]){
+					cnt2++;
+					endIndex--;
+				}
+				int pair=cnt1*cnt2;
+				ans+=pair;
+				startIndex++;
+                endIndex--;
+			}
+
+		}
+		return ans;
+	}
+
+	public static int tripletSum(int[] arr, int x) {
+		//Your code goes here
+		int n = arr.length;
+        int ans = 0;
+        Arrays.sort(arr);
+
+        for(int i = 0; i < n; i++){
+            int pairSumReq = x - arr[i];
+            int pairs = pairSum(arr, (i+1), (n-1), pairSumReq);
+            ans += pairs;
+        }
+
+        return ans;
+	}
+}
