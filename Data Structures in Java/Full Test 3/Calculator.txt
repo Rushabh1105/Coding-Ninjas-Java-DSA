@@ -1,0 +1,92 @@
+Calculator
+
+
+
+Send Feedback
+Given a String s, consisting of non negative integers and +,- operators as well as brackets ( and ).
+Your task is to solve the given string and print the output.
+Input Format:
+First and only line contains the string s.
+Output Format:
+Print the result of the given string.
+Constraints:
+1 <= String length <= 20000
+Sample Input 1:
+(1+2)
+Sample Output 1:
+3
+Sample Input 2:
+(1+(4+5+2)-3)+(6+8)
+Sample Output 2:
+23
+
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+public class Solution {
+	public static void main (String[] args) {
+	    // Write your code here
+        // Take input and print desired output
+
+		Scanner s = new Scanner(System.in);
+		String str = s.next();
+
+		System.out.println( helper(str) );
+	}
+
+	static int index = 0;
+	public static int helper( String s ){
+		int ans = 0;
+		int n = s.length();
+
+		char op = '+';
+
+		while( index < n ){
+			while( index<n && Character.isWhitespace( s.charAt(index)) ){
+				index++;
+			} 
+
+			int currNum = 0;
+
+			while( index<n && Character.isDigit( s.charAt(index)) ){
+				currNum = currNum*10 + (s.charAt(index)-'0');
+				index++;
+			}
+
+			while( index<n && Character.isWhitespace( s.charAt(index)) ){
+				index++;
+			} 
+
+			if( op == '+' ){
+				ans += currNum;
+			}else if( op == '-' ){
+				ans -= currNum;
+			}
+
+			if( index<n && s.charAt(index) == '(' ){
+				index++;
+				int ans1 = helper(s);
+				if( op == '+' ){
+					ans += ans1;
+				}else if( op == '-' ){
+					ans -= ans1;
+				}
+			}
+
+			if( index<n && s.charAt(index) == ')' ){
+				index++;
+				break;
+			}
+
+			if( index < n ){
+				op = s.charAt(index);
+			}
+
+			index++;
+		}
+
+		return ans;
+	}
+}

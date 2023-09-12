@@ -79,3 +79,69 @@ public class Solution {
 		helper2(root.right, arr);
 	}
 }
+
+
+###################################################################################################
+
+
+import java.util.ArrayList;
+
+public class Solution {
+
+	/*
+	 * Binary Tree Node class
+	 * 
+	 * class BinaryTreeNode<T> { T data; BinaryTreeNode<T> left; BinaryTreeNode<T>
+	 * right;
+	 * 
+	 * public BinaryTreeNode(T data) { this.data = data; } }
+	 */
+
+	public static void replaceWithLargerNodesSum(BinaryTreeNode<Integer> root) {
+		// Write your code here
+		ArrayList<Integer> arr = new ArrayList<>();
+		helper1( root, arr );
+
+		ArrayList<Integer> brr = new ArrayList<>();
+
+		for( int i = 0; i < arr.size(); i++ ){
+			int sum = arr.get(i);
+			for( int j = 0; j < arr.size(); j++ ){
+				if( arr.get(j) > arr.get(i) ){
+					sum += arr.get(j);
+				}
+			}
+
+			brr.add( sum );
+		}
+
+		// for( int i = 0; i < brr.size(); i++ ){
+		// 	System.out.println( brr.get(i) );
+		// }
+
+		// System.out.println();
+
+		helper2( root, brr );
+	}
+
+	public static void helper1( BinaryTreeNode<Integer> root, ArrayList<Integer> arr ){
+		if( root == null ){
+			return;
+		}
+
+		helper1( root.left , arr );
+		arr.add( root.data );
+		helper1( root.right, arr );
+	}
+
+	public static void helper2( BinaryTreeNode<Integer> root, ArrayList<Integer> brr ){
+		if( root == null ){
+			return;
+		}
+
+		helper2( root.left, brr );
+		root.data = brr.get(0);
+		brr.remove(0);
+		helper2( root.right, brr );
+	}
+}
